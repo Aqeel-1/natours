@@ -1,8 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const AppError = require('./utils/appError');
 const userRouter = require('./routes/userRoutes');
 const tourRouter = require('./routes/tourRoutes');
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
@@ -23,18 +25,15 @@ app.use((req, res, next) => {
   next();
 });
 
-// 2) ROUTE HANDLERS
-
-// app.get('/api/v1/tours', getAllTours);
-// app.post('/api/v1/tours', addNewTour);
-// app.get('/api/v1/tours/:id', getTour);
-// app.patch('/api/v1/tours/:id', updateTour);
-// app.delete('/api/v1/tours/:id', deleteTour);
-
 // 3) ROUTES
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
-// 4) START SERVER
+
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on the server!`, 404));
+});
+
+app.use(globalErrorHandler);
 
 module.exports = app;
