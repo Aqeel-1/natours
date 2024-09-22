@@ -1,6 +1,6 @@
 // Tour Model //
 const mongoose = require('mongoose');
-const { type } = require('os');
+// const { type } = require('os');
 const slugify = require('slugify');
 
 const tourSchema = new mongoose.Schema(
