@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const AppError = require('./utils/appError');
 const userRouter = require('./routes/userRoutes');
 const tourRouter = require('./routes/tourRoutes');
-const globalErrorHandler = require('./controllers/errorController');
+const globalErrorHandler = require('./controllers/errorControllers');
 
 const app = express();
 
@@ -14,11 +14,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json());
-
-app.use((req, res, next) => {
-  console.log('Hello from middelwere!');
-  next();
-});
 
 app.use((req, res, next) => {
   req.requestedAt = new Date().toISOString();

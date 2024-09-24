@@ -12,16 +12,20 @@
   "author": "Aqeel",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.13.22",
     "morgan": "^1.10.0",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.5.5",
+    "@types/validator": "^13.12.2",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
