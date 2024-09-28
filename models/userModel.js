@@ -15,10 +15,16 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   photo: String,
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guied', 'admin'],
+    default: 'user',
+  },
   password: {
     type: String,
     required: [true, 'You shuold write a password!'],
     minLength: 8,
+    select: false,
   },
   passwordConfirme: {
     type: String,
@@ -30,6 +36,7 @@ const userSchema = new mongoose.Schema({
       message: 'You should confirme your password!',
     },
   },
+  passwordChangedAt: Date,
 });
 
 userSchema.pre('save', async function (next) {
@@ -39,6 +46,26 @@ userSchema.pre('save', async function (next) {
   this.password = await becrypt.hash(this.password, 12);
   this.passwordConfirme = undefined;
 });
+
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword,
+) {
+  return await becrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function (jwtTimestamp) {
+  if (this.passwordChangedAt) {
+    const passwordChangedAt = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+
+    return jwtTimestamp < passwordChangedAt;
+  }
+
+  return false;
+};
 
 const User = mongoose.model('User', userSchema);
 
